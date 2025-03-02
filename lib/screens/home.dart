@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:beauty_manager/screens/login.dart';
+import 'package:beauty_manager/screens/register.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -87,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (ctx) => LoginScreen()));},
                           child: Text(
                             'Sign In',
                             style: TextStyle(
@@ -109,7 +111,7 @@ class HomeScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (ctx) => RegisterScreen()));},
                           child: Text(
                             'Sign Up',
                             style: TextStyle(
