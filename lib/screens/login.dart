@@ -1,3 +1,4 @@
+import 'package:beauty_manager/screens/register.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -5,6 +6,22 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (ctx) => RegisterScreen()),
+              );
+            },
+            child: Text('Sign Up', 
+            style: TextStyle(color: Colors.black,
+            fontSize: 20)),
+          ),
+        ],
+      ),
+    );
   }
 }
