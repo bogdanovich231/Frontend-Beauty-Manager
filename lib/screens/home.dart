@@ -1,6 +1,8 @@
+import 'package:beauty_manager/screens/login.dart';
+import 'package:beauty_manager/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:beauty_manager/screens/login.dart';
+// import 'package:beauty_manager/screens/login.dart';
 import 'package:beauty_manager/screens/register.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -74,52 +76,34 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 30),
                   Row(
                     children: [
-                      SizedBox(
+                      CustomButton(
+                        text: 'Sign In',
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (ctx) => LoginScreen()),
+                          );
+                        },
                         width: 178,
                         height: 63,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 13,
-                              horizontal: 30,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (ctx) => LoginScreen()));},
-                          child: Text(
-                            'Sign In',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
                       ),
                       const SizedBox(width: 15),
-                      SizedBox(
+                      CustomButton(
+                        text: 'Sign Up',
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => RegisterScreen(),
+                            ),
+                          );
+                        },
                         width: 178,
                         height: 63,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (ctx) => RegisterScreen()));},
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),
