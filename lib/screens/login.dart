@@ -3,8 +3,26 @@ import 'package:beauty_manager/widgets/custom_button.dart';
 import 'package:beauty_manager/widgets/custom_form.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _form = GlobalKey<FormState>();
+  var _enteredEmail = '';
+  var _enteredPassword = '';
+
+  void _submit() {
+    final isValid = _form.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    _form.currentState!.save();
+    print("Email: $_enteredEmail, Password: $_enteredPassword");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,22 +81,49 @@ class LoginScreen extends StatelessWidget {
                   horizontal: 26,
                   vertical: 50,
                 ),
-                child: Column(
-                  children: [
-                    CustomForm(text: 'Your email'),
-                    const SizedBox(height: 25),
-                    CustomForm(text: 'Your password'),
+                child: Form(
+                  key: _form,
+                  child: Column(
+                    children: [
+                      CustomForm(
+                        text: 'Your email',
+                        validator: (value) {
+                          if (value == null ||
+                              value.trim().isEmpty ||
+                              !value.contains("@")) {
+                            return 'Please enter a valid email address.';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _enteredEmail = value!;
+                        },
+                      ),
+                      const SizedBox(height: 25),
+                      CustomForm(
+                        text: 'Your password',
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Enter a password.';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _enteredPassword = value!;
+                        },
+                      ),
 
-                    const SizedBox(height: 35),
-                    CustomButton(
-                      text: 'Sign In',
-                      backgroundColor: Colors.black,
-                      textColor: Colors.white,
-                      onPressed: () {},
-                      width: double.infinity,
-                      height: 63,
-                    ),
-                  ],
+                      const SizedBox(height: 35),
+                      CustomButton(
+                        text: 'Sign In',
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        onPressed: _submit,
+                        width: double.infinity,
+                        height: 63,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
