@@ -101,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 25),
                       CustomForm(
+                        isPassword: true,
                         text: 'Your password',
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {

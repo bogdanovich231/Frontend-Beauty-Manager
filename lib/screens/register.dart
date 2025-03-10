@@ -69,7 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           const SizedBox(height: 30),
 
-          Flexible(
+          Expanded(
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -96,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           text: 'Your name',
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'Enter name';
+                              return 'Enter name.';
                             }
                             if (value[0] == value[0].toLowerCase()) {
                               return 'The name must start with a capital letter.';
@@ -109,6 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 20),
                         CustomForm(
+                      
                           text: 'Your email',
                           validator: (value) {
                             if (value == null ||
@@ -124,6 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 20),
                         CustomForm(
+                          isPassword: true,
                           text: 'Your password',
                           validator: (value) {
                             if (value == null || value.trim().length < 6) {
@@ -137,10 +139,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 20),
                         CustomForm(
+                          isPassword: true,
                           text: 'Repeat password',
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'Enter password';
+                              return 'Enter password.';
                             }
                             if (value == 'password') {
                               return 'Passwords do not match.';

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CustomForm extends StatefulWidget {
   final String text;
   final String? Function(String?) validator;
   final void Function(String?) onSaved;
+  final bool isPassword;
 
   const CustomForm({
     super.key,
     required this.text,
     required this.validator,
     required this.onSaved,
+    this.isPassword = false,
   });
 
   @override
@@ -17,6 +20,7 @@ class CustomForm extends StatefulWidget {
 }
 
 class _CustomFormState extends State<CustomForm> {
+  bool _isObscured = true;
   String? _errorMessage;
 
   @override
@@ -28,6 +32,7 @@ class _CustomFormState extends State<CustomForm> {
           width: double.infinity,
           height: 63,
           child: TextFormField(
+            obscureText: widget.isPassword ? _isObscured : false,
             validator: (value) {
               String? error = widget.validator(value);
               setState(() {
@@ -45,7 +50,7 @@ class _CustomFormState extends State<CustomForm> {
               filled: true,
               fillColor:
                   _errorMessage != null
-                      ? Theme.of(context).primaryColor
+                      ? const Color(0xFFFBDCDC)
                       : const Color(0xFFF5F5F5),
               border: OutlineInputBorder(
                 borderSide: BorderSide(
@@ -77,6 +82,22 @@ class _CustomFormState extends State<CustomForm> {
                 ),
                 borderRadius: BorderRadius.circular(15),
               ),
+              suffixIcon:
+                  widget.isPassword
+                      ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isObscured = !_isObscured;
+                          });
+                        },
+                        icon:
+                            _isObscured
+                                ? SvgPicture.asset('assets/images/Vector.svg')
+                                : SvgPicture.asset(
+                                  'assets/images/hidden-password.svg',
+                                ),
+                      )
+                      : null,
             ),
           ),
         ),
