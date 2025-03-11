@@ -1,4 +1,5 @@
-import 'package:beauty_manager/screens/register.dart';
+import 'package:beauty_manager/screens/main.dart';
+import 'package:beauty_manager/services/auth_service.dart';
 import 'package:beauty_manager/widgets/custom_button.dart';
 import 'package:beauty_manager/widgets/custom_form.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +16,25 @@ class _LoginScreenState extends State<LoginScreen> {
   var _enteredEmail = '';
   var _enteredPassword = '';
 
-  void _submit() {
+  Future<void> _submit() async {
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
     }
     _form.currentState!.save();
-    print("Email: $_enteredEmail, Password: $_enteredPassword");
+    final authService = AuthService();
+    final response = await authService.login(_enteredEmail, _enteredPassword);
+
+    if (response['success']) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Successfully logged in!')));
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (ctx) => MainScreen()),
+      );
+    }
   }
 
   @override
@@ -32,12 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (ctx) => RegisterScreen()),
-              );
-            },
+            onPressed: () {},
             child: Text(
               'Sign Up',
               style: TextStyle(color: Colors.black, fontSize: 20),
@@ -65,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           const SizedBox(height: 30),
 
-          Flexible(
+          Expanded(
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(

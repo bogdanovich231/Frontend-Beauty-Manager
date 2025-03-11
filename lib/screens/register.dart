@@ -1,4 +1,5 @@
-import 'package:beauty_manager/screens/login.dart';
+import 'package:beauty_manager/screens/main.dart';
+import 'package:beauty_manager/services/auth_service.dart';
 import 'package:beauty_manager/widgets/custom_button.dart';
 import 'package:beauty_manager/widgets/custom_form.dart';
 import 'package:flutter/material.dart';
@@ -15,17 +16,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var _enteredName = '';
   var _enteredEmail = '';
   var _enteredPassword = '';
-  var _repeatPassword = '';
 
-  void _submit() {
+  Future<void> _submit() async {
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
     }
     _form.currentState!.save();
-    print(
-      "Name: $_enteredName,Email: $_enteredEmail, Password: $_enteredPassword, Repeat Password: $_repeatPassword",
+    final authService = AuthService();
+    final response = await authService.register(
+      _enteredName,
+      _enteredEmail,
+      _enteredPassword,
     );
+    if (response['success']) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Successfully registered!')));
+
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (ctx) => MainScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(response['message'] ?? 'Registration failed')),
+      );
+    }
   }
 
   @override
@@ -35,12 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (ctx) => LoginScreen()),
-              );
-            },
+            onPressed: () {},
             child: Text(
               'Sign In',
               style: TextStyle(color: Colors.black, fontSize: 20),
@@ -109,7 +122,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 20),
                         CustomForm(
-                      
                           text: 'Your email',
                           validator: (value) {
                             if (value == null ||
@@ -150,9 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }
                             return null;
                           },
-                          onSaved: (value) {
-                            _repeatPassword = value!;
-                          },
+                          onSaved: (value) {},
                         ),
 
                         const SizedBox(height: 35),
