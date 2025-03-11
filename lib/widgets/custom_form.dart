@@ -6,6 +6,7 @@ class CustomForm extends StatefulWidget {
   final String? Function(String?) validator;
   final void Function(String?) onSaved;
   final bool isPassword;
+  final dynamic controller;
 
   const CustomForm({
     super.key,
@@ -13,6 +14,7 @@ class CustomForm extends StatefulWidget {
     required this.validator,
     required this.onSaved,
     this.isPassword = false,
+    required this.controller,
   });
 
   @override
@@ -32,6 +34,7 @@ class _CustomFormState extends State<CustomForm> {
           width: double.infinity,
           height: 63,
           child: TextFormField(
+            controller: widget.controller,
             obscureText: widget.isPassword ? _isObscured : false,
             validator: (value) {
               String? error = widget.validator(value);

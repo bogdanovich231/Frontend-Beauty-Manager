@@ -13,22 +13,30 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _form = GlobalKey<FormState>();
-  var _enteredName = '';
-  var _enteredEmail = '';
-  var _enteredPassword = '';
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  Future<void> _submit() async {
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _submit() async {
+    final name = _nameController.text;
+    final email = _emailController.text;
+    final password = _passwordController.text;
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
     }
     _form.currentState!.save();
+
     final authService = AuthService();
-    final response = await authService.register(
-      _enteredName,
-      _enteredEmail,
-      _enteredPassword,
-    );
+    final response = await authService.register(name, email, password);
     if (response['success']) {
       ScaffoldMessenger.of(
         context,
@@ -106,6 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CustomForm(
+                          controller: _nameController,
                           text: 'Your name',
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
@@ -117,11 +126,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return null;
                           },
                           onSaved: (value) {
-                            _enteredName = value!;
+                            _nameController.text = value!;
                           },
                         ),
                         const SizedBox(height: 20),
                         CustomForm(
+                          controller: _emailController,
                           text: 'Your email',
                           validator: (value) {
                             if (value == null ||
@@ -132,11 +142,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return null;
                           },
                           onSaved: (value) {
-                            _enteredEmail = value!;
+                            _emailController.text = value!;
                           },
                         ),
                         const SizedBox(height: 20),
                         CustomForm(
+                          controller: _passwordController,
                           isPassword: true,
                           text: 'Your password',
                           validator: (value) {
@@ -146,18 +157,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return null;
                           },
                           onSaved: (value) {
-                            _enteredPassword = value!;
+                            _passwordController.text = value!;
                           },
                         ),
                         const SizedBox(height: 20),
                         CustomForm(
+                          controller: null,
                           isPassword: true,
                           text: 'Repeat password',
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return 'Enter password.';
                             }
-                            if (value == 'password') {
+                            if (value != _passwordController.text) {
                               return 'Passwords do not match.';
                             }
                             return null;

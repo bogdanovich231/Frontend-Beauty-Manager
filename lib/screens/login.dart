@@ -13,17 +13,26 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _form = GlobalKey<FormState>();
-  var _enteredEmail = '';
-  var _enteredPassword = '';
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  Future<void> _submit() async {
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _submit() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
     }
     _form.currentState!.save();
     final authService = AuthService();
-    final response = await authService.login(_enteredEmail, _enteredPassword);
+    final response = await authService.login(email, password);
 
     if (response['success']) {
       ScaffoldMessenger.of(
@@ -91,47 +100,51 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: Form(
                   key: _form,
-                  child: Column(
-                    children: [
-                      CustomForm(
-                        text: 'Your email',
-                        validator: (value) {
-                          if (value == null ||
-                              value.trim().isEmpty ||
-                              !value.contains("@")) {
-                            return 'Please enter a valid email address.';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _enteredEmail = value!;
-                        },
-                      ),
-                      const SizedBox(height: 25),
-                      CustomForm(
-                        isPassword: true,
-                        text: 'Your password',
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Enter a password.';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _enteredPassword = value!;
-                        },
-                      ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        CustomForm(
+                          controller: _emailController,
+                          text: 'Your email',
+                          validator: (value) {
+                            if (value == null ||
+                                value.trim().isEmpty ||
+                                !value.contains("@")) {
+                              return 'Please enter a valid email address.';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _emailController.text = value!;
+                          },
+                        ),
+                        const SizedBox(height: 25),
+                        CustomForm(
+                          controller: _passwordController,
+                          isPassword: true,
+                          text: 'Your password',
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Enter a password.';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _passwordController.text = value!;
+                          },
+                        ),
 
-                      const SizedBox(height: 35),
-                      CustomButton(
-                        text: 'Sign In',
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
-                        onPressed: _submit,
-                        width: double.infinity,
-                        height: 63,
-                      ),
-                    ],
+                        const SizedBox(height: 35),
+                        CustomButton(
+                          text: 'Sign In',
+                          backgroundColor: Colors.black,
+                          textColor: Colors.white,
+                          onPressed: _submit,
+                          width: double.infinity,
+                          height: 63,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
