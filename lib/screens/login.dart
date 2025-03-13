@@ -1,6 +1,7 @@
 import 'package:beauty_manager/screens/main.dart';
+import 'package:beauty_manager/screens/register.dart';
 import 'package:beauty_manager/services/auth_service.dart';
-import 'package:beauty_manager/widgets/custom_button.dart';
+import 'package:beauty_manager/widgets/animated_button.dart';
 import 'package:beauty_manager/widgets/custom_form.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => RegisterScreen()));},
             child: Text(
               'Sign Up',
               style: TextStyle(color: Colors.black, fontSize: 20),
@@ -135,10 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
 
                         const SizedBox(height: 35),
-                        CustomButton(
+                        AnimatedButton(
                           text: 'Sign In',
-                          backgroundColor: Colors.black,
-                          textColor: Colors.white,
+                          color1: Colors.black,
+                          color2: Theme.of(context).primaryColor,
+                          textColor1: Colors.white,
+                          textColor2: Colors.black,
                           onPressed: _submit,
                           width: double.infinity,
                           height: 63,

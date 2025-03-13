@@ -1,5 +1,5 @@
 import 'package:beauty_manager/screens/login.dart';
-import 'package:beauty_manager/widgets/custom_button.dart';
+import 'package:beauty_manager/widgets/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:beauty_manager/screens/login.dart';
@@ -7,6 +7,7 @@ import 'package:beauty_manager/screens/register.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +77,13 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 30),
                   Row(
                     children: [
-                      CustomButton(
+                      AnimatedButton(
+
                         text: 'Sign In',
-                        backgroundColor: Colors.white,
-                        textColor: Colors.black,
+                        color1: Colors.white,
+                        color2: Colors.black,
+                        textColor1: Colors.black,
+                        textColor2: Colors.white,
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -90,10 +94,12 @@ class HomeScreen extends StatelessWidget {
                         height: 63,
                       ),
                       const SizedBox(width: 15),
-                      CustomButton(
+                      AnimatedButton(
                         text: 'Sign Up',
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
+                       color1: Colors.black,
+                       color2: Colors.white,
+                        textColor1: Colors.white,
+                        textColor2: Colors.black,
                         onPressed: () {
                           Navigator.push(
                             context,
