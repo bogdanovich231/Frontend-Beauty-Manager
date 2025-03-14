@@ -2,15 +2,56 @@ import 'package:beauty_manager/screens/login.dart';
 import 'package:beauty_manager/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:beauty_manager/screens/login.dart';
 import 'package:beauty_manager/screens/register.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  Future<void> _fetchData(BuildContext context) async {
+    final url = Uri.parse('https://your-api.com/data'); //Podmienić na nasze API!!!!!!!!
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        print('Dane z API: ${jsonDecode(response.body)}'); // Sukces - logujemy dane
+      } else if (response.statusCode == 404) {
+        Navigator.pushNamed(context, '/error', arguments: '404 Not Found');
+      } else {
+        Navigator.pushNamed(context, '/error', arguments: 'Server Error (${response.statusCode})');
+      }
+    } catch (e) {
+      Navigator.pushNamed(context, '/error', arguments: 'Network Error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'test_404') {
+                Navigator.pushNamed(context, '/error', arguments: '404 Not Found');
+              } else if (value == 'test_500') {
+                Navigator.pushNamed(context, '/error', arguments: '500 Internal Server Error');
+              } else if (value == 'test_api') {
+                _fetchData(context); //Pobranie danych z API + obsługa błędów
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(value: 'test_404', child: Text('Test Error 404')),
+              const PopupMenuItem(value: 'test_500', child: Text('Test Server Error (500)')),
+              const PopupMenuItem(value: 'test_api', child: Text('Test API Call')),
+            ],
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           Positioned(
@@ -55,7 +96,7 @@ class HomeScreen extends StatelessWidget {
               height: 428,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(40),
                   topRight: Radius.circular(40),
                 ),
