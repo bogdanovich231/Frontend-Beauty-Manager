@@ -11,5 +11,5 @@
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
 
-    <color name="colorPrimary">#FFFAFC</color>
+    <color name="colorPrimary">#F7CCC3</color>
 </resources>

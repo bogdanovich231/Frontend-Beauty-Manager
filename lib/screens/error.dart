@@ -5,7 +5,7 @@ class ErrorScreen extends StatelessWidget {
   final String message;
   final String errorCode;
 
-  const ErrorScreen({Key? key, required this.message, required this.errorCode}) : super(key: key);
+  const ErrorScreen({super.key, required this.message, required this.errorCode});
 
   @override
   Widget build(BuildContext context) {
